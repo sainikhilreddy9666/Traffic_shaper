@@ -1,0 +1,58 @@
+E # 0 t 0 m 1 ce -1 msg -1
+SB v 1286 rid General-0-20210327-13:01:36-16000 b 1000
+KF p -1 c "" s ""
+MC id 1 c omnetpp::cModule t TBTS n TBTS cm 1
+MS id 1 d bgb=271,253;i=abstract/switch
+MC id 2 c Tic_Trans t Tic_Trans pid 1 n tic_Trans
+GC m 2 g 1 n out o 1
+MS id 2 d p=32,127;i=block/source
+MC id 3 c Toc_Rec t Toc_Rec pid 1 n toc_Rec
+GC m 3 g 0 n in o 0
+MS id 3 d p=228,128;i=block/sink
+MC id 4 c Traffic_Shaper t Traffic_Shaper pid 1 n traffic_Shaper
+GC m 4 g 0 n in o 0
+GC m 4 g 2 n Token_in o 0
+GC m 4 g 5 n out o 1
+GC m 4 g 7 n Token_out o 1
+MS id 4 d is=l;p=134,128;i=block/boundedqueue
+MC id 5 c Token_Generator t Token_Generator pid 1 n token_Generator
+GC m 5 g 0 n in o 0
+GC m 5 g 3 n out o 1
+MS id 5 d p=134,39;i=block/bucket
+CC sm 2 sg 1 dm 4 dg 0
+CC sm 5 sg 3 dm 4 dg 2
+CC sm 4 sg 7 dm 5 dg 0
+CC sm 4 sg 5 dm 3 dg 0
+MB sm 1 tm 2 m initialize(0)
+CM id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n tic-1 pe -1
+- INFO (Tic_Trans)TBTS.tic_Trans:Station A timeout: 0.13
+CM id 1 tid 1 eid 1 etid 1 c omnetpp::cMessage n timeoutEvent pe -1
+CL id 0 tid 0 eid 0 etid 0 c omnetpp::cMessage n tic-1 pe 0 cid 2
+BS id 2 tid 0 eid 2 etid 0 c omnetpp::cMessage n tic-1 pe 0
+SH sm 2 sg 1
+ES t 0
+CL id 2 tid 0 eid 2 etid 0 c omnetpp::cMessage n tic-1 pe 0 cid 3
+BS id 1 tid 1 eid 1 etid 1 c omnetpp::cMessage n timeoutEvent pe 0
+ES t 0.13
+ME
+MB sm 1 tm 3 m initialize(0)
+ME
+MB sm 1 tm 4 m initialize(0)
+ME
+MB sm 1 tm 5 m initialize(0)
+- INFO (Token_Generator)TBTS.token_Generator:Receiving initial token_rate parameter in 
+- INFO (Token_Generator)TBTS.token_Generator:Token Generator timeout: 0.25
+CM id 3 tid 3 eid 3 etid 3 c omnetpp::cMessage n timeoutEvent pe -1
+- INFO (Token_Generator)TBTS.token_Generator:Sending initial message
+CM id 4 tid 4 eid 4 etid 4 c omnetpp::cMessage n Token pe -1
+- INFO (Token_Generator)TBTS.token_Generator:Token Sent to Traffic shapper 
+- INFO (Token_Generator)TBTS.token_Generator:Sent: Token
+BS id 4 tid 4 eid 4 etid 4 c omnetpp::cMessage n Token pe 0
+SH sm 5 sg 3
+ES t 0
+CL id 4 tid 4 eid 4 etid 4 c omnetpp::cMessage n Token pe 0 cid 5
+BS id 3 tid 3 eid 3 etid 3 c omnetpp::cMessage n timeoutEvent pe 0
+ES t 0.25
+ME
+DM id 2 tid 0 eid 2 etid 0 c omnetpp::cMessage n tic-1 pe 0
+DM id 4 tid 4 eid 4 etid 4 c omnetpp::cMessage n Token pe 0
